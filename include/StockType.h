@@ -51,3 +51,32 @@ enum FinancialStatusIndicator {
     CREATIONS_AND_OR_REDEMPTIONS_SUS_FOR_EXCH_TRADE_PRODUCT = 'C',
     NORMAL                                                  = 'N',
 };
+
+enum TradingState {
+    HALT      = 'H',
+    PAUSE     = 'P',
+    QUOTATION = 'Q',
+    TRADING   = 'T',
+};
+
+enum REG_SHO_ACTION {
+    NO_PRICE             = '0',
+    INTRA_DAY_PRICE_DROP = '1',
+    TEST_RESTRICTION     = '2'
+};
+
+enum MarketMaker {
+    NORM          = 'N',
+    PASSIVE       = 'P',
+    SYNDICATE     = 'S',
+    PRE_SYNDICATE = 'R',
+    PENALTY       = 'L'
+};
+
+enum MarketParticipant {
+    ACTIVE    = 'A',
+    EXCUSED   = 'E',
+    WITHDRAWN = 'W',
+    SUS       = 'S',
+    DELETED   = 'D',
+};
