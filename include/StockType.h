@@ -80,3 +80,15 @@ enum MarketParticipant {
     SUS       = 'S',
     DELETED   = 'D',
 };
+
+enum BreachedLevel {
+    LEVEL1 = '1',
+    LEVEL2 = '2',
+    LEVEL3 = '3',
+};
+
+enum MarketCode {
+    NASDAQ = 'Q',
+    BX     = 'B',
+    PSX    = 'X',
+};
