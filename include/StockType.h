@@ -1,6 +1,9 @@
 #ifndef STOCK_TYPE_H
 #define STOCK_TYPE_H
+#include "SystemMessage.h"
 #endif
+
+#include "Protocol.h"
 
 enum MessageType {
     SYSTEM_EVENT_MESSAG                                = 'S',
@@ -93,7 +96,68 @@ enum MarketCode {
     PSX    = 'X',
 };
 
+enum YesNoFlag {
+    YES  = 'Y',
+    NO   = 'N',
+    NONE = ' ',
+};
+
+struct StockDirectory {
+    u64 Stock;
+    MarketCategory MarkCat;
+    FinancialStatusIndicator FSI;
+    u32 RoundLotSize;
+    bool RoundLotsOnly;
+    u8 IssueClassification;
+    u16 IssueSubType;
+    u8 Authenticity;
+    YesNoFlag ShortSaleThresIndicator;
+    YesNoFlag IPOFlag;
+    u8 LULDReferencePriceTier;
+    YesNoFlag ETPFlag;
+    u32 ETPLeverageFactor;
+    bool InverseIndicator;
+};
+
+struct StockTradingAction {
+    u64 Stock;
+    TradingState TS;
+    u8 Reserved;
+    u32 Reason;
+};
+
+struct ShortSalePriceTestRI {
+    u64 Stock;
+    REG_SHO_ACTION RSA;
+};
+
+struct MarketParticipantPosition {
+    u32 MPID;
+    u64 Stock;
+    bool PrimaryMarketMaker;
+    MarketMaker MarketMakerMode;
+    MarketParticipant MarketParticipantState;
+};
+
+struct MWCBDeclineLevelMessage {
+    u64 Level1;
+    u64 Level2;
+    u64 Level3;
+};
+
 struct Message {
     MessageType Type;
-
+    u16         StockLocate;
+    u16         TrackingNumber;
+    u64         Timestamp;
+    union {
+        SystemEvent EventCode;
+        StockDirectory Directory;
+        StockTradingAction STA;
+        ShortSalePriceTestRI SSPTRI;
+        MarketParticipantPosition MPP;
+        MWCBDeclineLevelMessage MWCBDecLevMsg;
+        BreachedLevel BL;
+    };
 };
+
