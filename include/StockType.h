@@ -3,8 +3,8 @@
 #endif
 
 enum MessageType {
-    STOCK_DIRECTORY_MESSAGE                            = 'R',
     SYSTEM_EVENT_MESSAG                                = 'S',
+    STOCK_DIRECTORY_MESSAGE                            = 'R',
     STOCK_TRADING_ACTION_MESSAGE                       = 'H',
     REG_SHO_SHORT_SALE_PRICE_TEST_RESTRICTED_INDICATOR = 'Y',
     MARKET_PARTICIPANT_POSITION_MESSAGE                = 'L',
@@ -91,4 +91,9 @@ enum MarketCode {
     NASDAQ = 'Q',
     BX     = 'B',
     PSX    = 'X',
+};
+
+struct Message {
+    MessageType Type;
+
 };
