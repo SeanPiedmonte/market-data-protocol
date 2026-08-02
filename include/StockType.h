@@ -4,6 +4,7 @@
 #endif
 
 #include "Protocol.h"
+#include "TradeMessage.h"
 
 enum MessageType {
     SYSTEM_EVENT_MESSAG                                = 'S',
@@ -145,6 +146,83 @@ struct MWCBDeclineLevelMessage {
     u64 Level3;
 };
 
+struct IPOQuotingPeriodUpdate {
+    u64 Stock;
+    u32 IPOQuotationReleaseTime;
+    u8  IPOQuotationReleaseQualifier;
+    u32 IPOPrice;
+};
+
+struct LULDAuctionCollar {
+    u64 Stock;
+    u32 AuctionCollarReferencePrice;
+    u32 UpperAuctionCollarPrice;
+    u32 LowerAuctionCollarPrice;
+    u32 AuctionCollarExtension;
+};
+
+struct OperationalHalt {
+    u64 Stock;
+    MarketCode MarketCode;
+    u8 OperationalHaltAction;
+};
+
+struct AddOrder {
+    u64 OrderReferenceNumber;
+    u8  BuySellIndicator;
+    u32 Shares;
+    u64 Stock;
+    u32 Price;
+    u32 Attribution; // This field is possible to not be present
+};
+
+struct OrderExecutedWithPrice {
+    u32 ExecutedShares;
+    u64 MatchNumber;
+    bool Printable;
+    u32  ExecutionPrice;
+};
+
+struct OrderExecuted {
+    u32 ExecutedShares;
+    u64 MatchNumber;
+};
+
+struct OrderReplaceMessage {
+    u64 NewOrderReferenceNumber;
+    u32 Shares;
+    u32 Price;
+};
+
+struct ModifyOrderMessages {
+    MessageType Type;
+    u64 OrderReferenceNumber;
+    union {
+        OrderExecuted OrderExecute;
+        OrderExecutedWithPrice OrderExecuteWithPrice;
+        u32 CancelledShares; // For a cancel msg
+        struct {} Delete; // for a delete msg
+        OrderReplaceMessage Replace;
+    };
+};
+
+struct TradeMessageNonCross {
+    u64 OrderReferenceNumber;
+    u8  BuySellIndicator;
+    u32 Shares;
+    u64 Stock;
+    u32 Price;
+    u64 MatchNumber;
+};
+
+struct CrossTradeMessage {
+    u64 Shares;
+    u64 Stock;
+    u32 CrossPrice;
+    u64 MatchNumber;
+    CrossType CrossType; 
+};
+
 struct Message {
     MessageType Type;
     u16         StockLocate;
@@ -158,6 +236,14 @@ struct Message {
         MarketParticipantPosition MPP;
         MWCBDeclineLevelMessage MWCBDecLevMsg;
         BreachedLevel BL;
+        IPOQuotingPeriodUpdate IPO;
+        LULDAuctionCollar LULDAucCol;
+        OperationalHalt Halt;
+        AddOrder AddOrder;
+        ModifyOrderMessages ModifyOrder;
+        TradeMessageNonCross TradeMessageNC;
+        CrossTradeMessage CrossTradeMsg;
+        u64 MatchNumber;
     };
 };
 
