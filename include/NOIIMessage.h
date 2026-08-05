@@ -11,7 +11,7 @@ enum ImbalanceDirection {
 };
 
 enum PriceVariation {
-    LESS_ONE = 'L',
+    LESS_ONE       = 'L',
     ONE            = '1',
     TWO            = '2',
     THREE          = '3',

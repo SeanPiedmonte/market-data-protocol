@@ -3,8 +3,10 @@
 #include "SystemMessage.h"
 #endif
 
+#include "NOIIMessage.h"
 #include "Protocol.h"
 #include "TradeMessage.h"
+#include "RetailPriceImprovementIndicator.h"
 
 enum MessageType {
     SYSTEM_EVENT_MESSAG                                = 'S',
@@ -104,7 +106,6 @@ enum YesNoFlag {
 };
 
 struct StockDirectory {
-    u64 Stock;
     MarketCategory MarkCat;
     FinancialStatusIndicator FSI;
     u32 RoundLotSize;
@@ -121,20 +122,17 @@ struct StockDirectory {
 };
 
 struct StockTradingAction {
-    u64 Stock;
     TradingState TS;
     u8 Reserved;
     u32 Reason;
 };
 
 struct ShortSalePriceTestRI {
-    u64 Stock;
     REG_SHO_ACTION RSA;
 };
 
 struct MarketParticipantPosition {
     u32 MPID;
-    u64 Stock;
     bool PrimaryMarketMaker;
     MarketMaker MarketMakerMode;
     MarketParticipant MarketParticipantState;
@@ -147,14 +145,12 @@ struct MWCBDeclineLevelMessage {
 };
 
 struct IPOQuotingPeriodUpdate {
-    u64 Stock;
     u32 IPOQuotationReleaseTime;
     u8  IPOQuotationReleaseQualifier;
     u32 IPOPrice;
 };
 
 struct LULDAuctionCollar {
-    u64 Stock;
     u32 AuctionCollarReferencePrice;
     u32 UpperAuctionCollarPrice;
     u32 LowerAuctionCollarPrice;
@@ -162,7 +158,6 @@ struct LULDAuctionCollar {
 };
 
 struct OperationalHalt {
-    u64 Stock;
     MarketCode MarketCode;
     u8 OperationalHaltAction;
 };
@@ -171,79 +166,72 @@ struct AddOrder {
     u64 OrderReferenceNumber;
     u8  BuySellIndicator;
     u32 Shares;
-    u64 Stock;
     u32 Price;
     u32 Attribution; // This field is possible to not be present
 };
 
-struct OrderExecutedWithPrice {
-    u32 ExecutedShares;
-    u64 MatchNumber;
-    bool Printable;
-    u32  ExecutionPrice;
-};
-
-struct OrderExecuted {
-    u32 ExecutedShares;
-    u64 MatchNumber;
-};
-
-struct OrderReplaceMessage {
-    u64 NewOrderReferenceNumber;
-    u32 Shares;
-    u32 Price;
-};
-
 struct ModifyOrderMessages {
-    MessageType Type;
-    u64 OrderReferenceNumber;
-    union {
-        OrderExecuted OrderExecute;
-        OrderExecutedWithPrice OrderExecuteWithPrice;
-        u32 CancelledShares; // For a cancel msg
-        struct {} Delete; // for a delete msg
-        OrderReplaceMessage Replace;
-    };
+    u64  OrderReferenceNumber;
+    u64  NewOrderReferenceNumber;
+    u64  MatchNumber;
+    u32  Shares; // Optional field that exists for all but Delete
+    u32  Price; // Optional Field for types "C", "U"
+    bool Printable; // Optional field for "C"
 };
 
-struct TradeMessageNonCross {
+struct TradeMessage {
     u64 OrderReferenceNumber;
-    u8  BuySellIndicator;
     u32 Shares;
-    u64 Stock;
     u32 Price;
-    u64 MatchNumber;
-};
-
-struct CrossTradeMessage {
-    u64 Shares;
-    u64 Stock;
-    u32 CrossPrice;
     u64 MatchNumber;
     CrossType CrossType; 
+    u8  BuySellIndicator;
+};
+
+struct NOIIMessage {
+    u64 PairedShares;
+    u64 ImbalanceShares;
+    u32 FarPrice;
+    u32 NearPrice;
+    u32 CurrentReferencePrice;
+    CrossType CrossType;
+    PriceVariation PriceVariation;
+    ImbalanceDirection ImbalanceDirection;
+};
+
+struct DirectListing {
+    u32  MinAllowablePrice;
+    u32  MaxAllowablePrice;
+    u64  NearExecutionTime;
+    u32  NearExecutionPrice;
+    u32  LowerPriceRangeCollar;
+    u32  UpperPriceRangeCollar;
+    bool OpenEligibilityStatus;
 };
 
 struct Message {
-    MessageType Type;
-    u16         StockLocate;
-    u16         TrackingNumber;
-    u64         Timestamp;
+    u16          TrackingNumber;
+    u64          Timestamp;
+    u64          Stock;
+    MessageType  Type;
+    u16          StockLocate;
+    InterestFlag IF; 
     union {
-        SystemEvent EventCode;
-        StockDirectory Directory;
-        StockTradingAction STA;
-        ShortSalePriceTestRI SSPTRI;
+        SystemEvent               EventCode;
+        StockDirectory            Directory;
+        StockTradingAction        STA;
+        ShortSalePriceTestRI      SSPTRI;
         MarketParticipantPosition MPP;
-        MWCBDeclineLevelMessage MWCBDecLevMsg;
-        BreachedLevel BL;
-        IPOQuotingPeriodUpdate IPO;
-        LULDAuctionCollar LULDAucCol;
-        OperationalHalt Halt;
-        AddOrder AddOrder;
-        ModifyOrderMessages ModifyOrder;
-        TradeMessageNonCross TradeMessageNC;
-        CrossTradeMessage CrossTradeMsg;
-        u64 MatchNumber;
+        MWCBDeclineLevelMessage   MWCBDecLevMsg;
+        BreachedLevel             BL;
+        IPOQuotingPeriodUpdate    IPO;
+        LULDAuctionCollar         LULDAucCol;
+        OperationalHalt           Halt;
+        AddOrder                  AddOrder;
+        ModifyOrderMessages       ModifyOrder;
+        TradeMessage              TradeMessage;
+        NOIIMessage               NOIIMessage;
+        DirectListing             DirectListing;
     };
 };
 
