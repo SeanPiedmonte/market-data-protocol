@@ -1,0 +1,7 @@
+#include "StockType.h"
+#include "Protocol.h"
+#include "Parser.h"
+#include "Reader.h"
+#include "NOIIMessage.h"
+#include "RetailPriceImprovementIndicator.h"
+#include "TradeMessage.h"

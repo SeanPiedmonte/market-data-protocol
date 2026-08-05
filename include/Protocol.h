@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
 
 // Easier to work with type definitions

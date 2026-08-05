@@ -3,7 +3,6 @@
 #include "SystemMessage.h"
 #endif
 
-#include "NOIIMessage.h"
 #include "Protocol.h"
 #include "TradeMessage.h"
 #include "RetailPriceImprovementIndicator.h"
@@ -103,6 +102,54 @@ enum YesNoFlag {
     YES  = 'Y',
     NO   = 'N',
     NONE = ' ',
+};
+
+enum ImbalanceDirection {
+    BUY          = 'B',
+    SELL         = 'S',
+    NO_IMBALANCE = 'N',
+    INSUFFICIENT = 'O',
+    PAUSED       = 'P',
+};
+
+enum PriceVariation {
+    LESS_ONE       = 'L',
+    ONE            = '1',
+    TWO            = '2',
+    THREE          = '3',
+    FOUR           = '4',
+    FIVE           = '5',
+    SIX            = '6',
+    SEVEN          = '7',
+    EIGHT          = '8',
+    NINE           = '9',
+    TENS           = 'A',
+    TWENTIES       = 'B',
+    THIRTY_GREATER = 'C',
+    NO_CALC        = ' ',
+};
+
+enum InterestFlag {
+    RPI_BUY      = 'B',
+    RPI_SELL     = 'S',
+    RPI_BUY_SELL = 'A',
+    RPI_NONE     = 'N',
+};
+
+enum SystemEvent {
+    MESSAGE_START       = 'O',
+    START_SYSTEM_HOURS  = 'S',
+    START_MARKET_HOURS  = 'Q',
+    END_MARKET_HOURS    = 'M',
+    END_SYSTEM_HOURS    = 'E',
+    MESSAGE_END         = 'C',
+};
+
+enum CrossType {
+    OPENING_CROSS  = 'O',
+    CLOSING_CROSS  = 'C',
+    HALT_CROSS     = 'H',
+    EXTENDED_CLOSE = 'A',
 };
 
 struct StockDirectory {
