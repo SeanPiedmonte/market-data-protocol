@@ -1,11 +1,4 @@
-#ifndef STOCK_TYPE_H
-#define STOCK_TYPE_H
-#include "SystemMessage.h"
-#endif
-
 #include "Protocol.h"
-#include "TradeMessage.h"
-#include "RetailPriceImprovementIndicator.h"
 
 enum MessageType {
     SYSTEM_EVENT_MESSAGE                               = 'S',

@@ -1,5 +1,4 @@
-#include "../include/Parser.h"
-#include "../include/StockType.h"
+#include "StockType.h"
 
 void ProcessMessage(unsigned char *buffer, int len) {
     int offset = 0;
