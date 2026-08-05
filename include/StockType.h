@@ -9,7 +9,7 @@
 #include "RetailPriceImprovementIndicator.h"
 
 enum MessageType {
-    SYSTEM_EVENT_MESSAG                                = 'S',
+    SYSTEM_EVENT_MESSAGE                               = 'S',
     STOCK_DIRECTORY_MESSAGE                            = 'R',
     STOCK_TRADING_ACTION_MESSAGE                       = 'H',
     REG_SHO_SHORT_SALE_PRICE_TEST_RESTRICTED_INDICATOR = 'Y',
